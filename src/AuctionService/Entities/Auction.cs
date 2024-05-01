@@ -10,7 +10,7 @@ public class Auction
     public string Seller { get; set; }
     public int SoldAmout { get; set; }
 
-    public int CurrentHighBid { get; set; }
+    public int CurrentHighBid { get; set; } = 0;
 
     public DateTime CreatedAt { get; set; }
 
