@@ -8,6 +8,8 @@ public class AuctionDto
     public int ReservePrice { get; set; }
 
     public string Seller { get; set; }
+
+    public string Winner { get; set; }
     public int SoldAmout { get; set; }
 
     public int CurrentHighBid { get; set; }
