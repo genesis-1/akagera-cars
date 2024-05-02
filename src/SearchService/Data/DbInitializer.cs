@@ -18,17 +18,12 @@ public class DbInitializer
         .CreateAsync();
 
         var count = await DB.CountAsync<Item>();
-        if (count == 0)
-        {
-            Console.Write("No data found in the database. Adding sample data...");
-            var itemData = await File.ReadAllTextAsync("Data/auctions.json");
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-            var items = JsonSerializer.Deserialize<List<Item>>(itemData, options);
-            await DB.InsertAsync(items);
+        using var scope = app.Services.CreateScope();
+        var httpClient = scope.ServiceProvider.GetRequiredService<AuctionSvcHttpClient>();
+        var items = await httpClient.GetItemsForSearchAsync();
 
-        }
+        Console.WriteLine(items.Count() + " items fetched from AuctionService");
+
+        if(items.Count > 0) await DB.SaveAsync(items);
     }
 }
